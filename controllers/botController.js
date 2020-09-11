@@ -25,8 +25,12 @@ createResponse = (req, res) => {
           chat_id: user.id,
           text: 'You have already started this bot.'
         })
-        .then((response) => res.status(200).send(response))
-        .catch((error) => res.send(error))
+        .then((response) => {
+          res.status(200).send(response)
+        })
+        .catch((error) => {
+          res.send(error)
+        })
     } else {
       db.get('users').push(user).write()
       axios
@@ -35,8 +39,12 @@ createResponse = (req, res) => {
           chat_id: user.id,
           text: 'Welcome! News coming soon.'
         })
-        .then((response) => res.status(200).send(response))
-        .catch((error) => res.send(error))
+        .then((response) => {
+          res.status(200).send(response)
+        })
+        .catch((error) => {
+          res.send(error)
+        })
     }
   } 
 
@@ -50,21 +58,27 @@ createResponse = (req, res) => {
           if(newsInDb === undefined) {
             db.get('news').push(item).write()
             let link = item.link
-            db.get('users').value().forEach( user => {
+            db.get('users').value().forEach(user => {
               axios
                 .post(`${url}${token}/sendMessage`,
                 {
                   chat_id: user.id,
                   text: link
                 })
-                .then((response) => res.status(200).send(response))
-                .catch((error) => res.send(error))
-                               
+                .then((response) => {
+                  res.status(200).send(response)
+                })
+                .catch((error) => {
+                  res.send(error)
+                })         
             })
           }
         })
       })
-      .catch((error) => res.send(error))
+      .catch((error) => {
+        res.send(error)
+      })
+
     setTimeout(request, delay) 
   }, delay)
 }
