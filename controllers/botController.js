@@ -48,7 +48,7 @@ createResponse = (req, res) => {
     }
   } 
 
-  let delay = 20000
+  let delay = 300000
 
   setTimeout(function request() {
     getNews(rssFeed)
