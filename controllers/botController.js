@@ -15,40 +15,32 @@ const getNews = require('../utils/getNews')
 createResponse = (req, res) => {
   const user = req.body.message.chat
   const sentMessage = req.body.message.text 
-   
+  
   if(sentMessage === '/start') {
+    let text = 'Welcome! News coming soon.'
     const userInDb = db.get('users').find({ id: user.id }).value()
+
     if(userInDb) {
-      axios
-        .post(`${url}${token}/sendMessage`,
-        {
-          chat_id: user.id,
-          text: 'You have already started this bot.'
-        })
-        .then((response) => {
-          res.status(200).send(response)
-        })
-        .catch((error) => {
-          res.send(error)
-        })
+      text = 'You have already started this bot.'
     } else {
       db.get('users').push(user).write()
-      axios
-        .post(`${url}${token}/sendMessage`,
-        {
-          chat_id: user.id,
-          text: 'Welcome! News coming soon.'
-        })
-        .then((response) => {
-          res.status(200).send(response)
-        })
-        .catch((error) => {
-          res.send(error)
-        })
     }
+    
+    axios
+      .post(`${url}${token}/sendMessage`,
+      {
+        chat_id: user.id,
+        text: text
+      })
+      .then((response) => {
+        res.status(200).send(response)
+      })
+      .catch((error) => {
+        res.send(error)
+      })
   } 
 
-  let delay = 300000
+  let delay = 10000
 
   setTimeout(function request() {
     getNews(rssFeed)
