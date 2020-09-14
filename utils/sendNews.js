@@ -30,7 +30,6 @@ const sendNews = (delay) => {
         })
       setTimeout(request, delay)
     }, delay)
-
   } catch (error) {
     console.log(error)
   }

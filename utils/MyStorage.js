@@ -2,7 +2,7 @@ const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
 const adapter = new FileSync('db.json')
 
-const MyStorage = (function () {
+const MyStorage = (function() {
   let db
 
   function createDb() {
@@ -12,7 +12,7 @@ const MyStorage = (function () {
   }
 
   return {
-    getDb: function () {
+    getDb: function() {
       if (!db) db = createDb()
       return db
     }
