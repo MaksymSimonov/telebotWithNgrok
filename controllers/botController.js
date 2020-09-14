@@ -53,7 +53,7 @@ createResponse = async (req, res, next) => {
 
       setTimeout(request, delay)
     }, delay)
-    axios.post(`${url}${token}/sendMessage`, { chat_id: user.id, text: link })
+   
   } catch (error) {
     console.log(error)
     res.send(error)
