@@ -1,8 +1,5 @@
 const axios = require('axios')
 
-const MyStorage = require('./MyStorage')
-const myStorage = MyStorage.getDb()
-
 const credentials = require('../credentials.json')
 const url = credentials.telegram_url
 const token = credentials.telegram_bot_token
