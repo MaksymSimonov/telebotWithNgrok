@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 
 const db = require('./db')
-const sendNews = require('./utils/sendNews')
+const sendNews = require('./utils/news/sendNews')
 const botRouter = require('./routes/botRouter')
 const credentials = require('./credentials.json')
 
@@ -16,6 +16,6 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 app.listen(port, () => console.log(`Server running on port ${port}`))
 
-// const delay = 300000
-// sendNews(delay)
+const delay = 10000
+sendNews(delay)
 

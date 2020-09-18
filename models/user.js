@@ -3,11 +3,12 @@ const Schema = mongoose.Schema
 
 const User = new Schema(
   {
-    telegram_id: Number,
+    id: Number,
+    is_bot: Boolean,
     first_name: String,
     last_name: String,
     username: String,
-    type: String
+    language_code: String
   }, { versionKey: false }
 )
 

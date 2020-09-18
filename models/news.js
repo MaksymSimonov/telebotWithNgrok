@@ -5,11 +5,11 @@ const News = new Schema(
   {
     title: String,
     link: String,
-    pubDate: Number,
+    pubDate: String,
     comments: String,
     content: String,
     contentSnippet: String,
-    isoDate: Number
+    isoDate: String
   }, { versionKey: false }
 )
 

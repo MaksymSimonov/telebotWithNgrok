@@ -1,5 +1,7 @@
 # Ignores the credentials
 credentials.json
+aws/config
+db/config
 
 # Ignores a local db
 db.json
