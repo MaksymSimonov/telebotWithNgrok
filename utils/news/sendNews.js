@@ -18,28 +18,27 @@ const sendNews = (delay) => {
       getNews(rssFeed)
         .then(news => {
           news.forEach(async item => {
-            let pubDate = moment(item.pubDate).valueOf()
+            const pubDate = moment(item.pubDate).valueOf()
 
-            if(latestNewsDate < pubDate) {
-              let news = new News(item)             
+            if (latestNewsDate < pubDate) {
+              const news = new News(item)
               await news.save()
-
               latestNewsDate = pubDate
 
-              let link = news.link
-              let users = await User.find({})
-              if(users) {
+              const link = news.link
+              const users = await User.find({})
+              if (users) {
                 users.forEach(async user => {
                   await axios.post(`${url}/bot${token}/sendMessage`, { chat_id: user.id, text: link })
                 })
-              }         
-            }          
+              }
+            }
           })
         })
       setTimeout(request, delay)
     }, delay)
   } catch (error) {
-    console.log(error)
+    throw new Error(`Failed to send news`)
   }
 }
 

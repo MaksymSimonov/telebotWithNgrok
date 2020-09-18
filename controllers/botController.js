@@ -11,42 +11,42 @@ const token = credentials.telegram_bot_token
 createResponse = async (req, res) => {
   try {
     const message = req.body.message
-    let user = message.from
+    const user = message.from
 
-    if (message.entities) {     
+    if (message.entities) {
       let text = 'Welcome! News coming soon.'
-      let type = message.entities[0].type
+      const type = message.entities[0].type
 
-      if(message.text === '/start' && type === 'bot_command') {
-        let userInDb = await User.findOne({ id: user.id }) 
-        
+      if (message.text === '/start' && type === 'bot_command') {
+        const userInDb = await User.findOne({ id: user.id })
+
         if (userInDb) {
-           text = 'You have already started this bot.'
+          text = 'You have already started this bot.'
         } else {
-          let newUser = new User(user)
+          const newUser = new User(user)
           await newUser.save()
         }
       }
-
-      const response = await axios.post(`${url}/bot${token}/sendMessage`, { chat_id: user.id, text: text })
-      //res.status(200).send(response.data)
+      await axios.post(`${url}/bot${token}/sendMessage`, { chat_id: user.id, text: text })
     }
-    
-    if(message.photo) {
-      let fileId = message.photo[message.photo.length-1].file_id
-      let response = await axios.get(`${url}/bot${token}/getFile?file_id=${fileId}`)
 
-      let filePath = response.data.result.file_path
+    if (message.photo) {
+      const fileId = message.photo[message.photo.length - 1].file_id
+      const resFilePath = await axios.get(`${url}/bot${token}/getFile?file_id=${fileId}`)
+      const filePath = resFilePath.data.result.file_path
 
-      let file = await axios.get(`${url}/file/bot${token}/${filePath}`, { responseType: 'stream' })
+      const resFileStream = await axios.get(`${url}/file/bot${token}/${filePath}`, { responseType: 'stream' })
+      const fileStream = resFileStream.data
 
-      uploadFile(file.data)
+      uploadFile(fileStream)
         .then(async img => {
-          let newImg = new Img(img)
+          const newImg = new Img(img)
           await newImg.save()
           await axios.post(`${url}/bot${token}/sendMessage`, { chat_id: user.id, text: newImg.src })
         })
     }
+
+    res.status(200).send({})
   } catch (error) {
     console.log(error)
   }
