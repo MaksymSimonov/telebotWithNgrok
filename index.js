@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
-const db = require('./db')
+const { client } = require('./db')
 const sendNews = require('./utils/news/sendNews')
 const botRouter = require('./routes/botRouter')
 const credentials = require('./credentials.json')
@@ -12,10 +12,10 @@ const port = credentials.ngrok_port
 app.use(bodyParser.json())
 app.use(botRouter)
 
-db.on('error', console.error.bind(console, 'MongoDB connection error:'))
+client.on('error', err => console.error('PostgreSQL connection error:', err.stack))
 
 app.listen(port, () => console.log(`Server running on port ${port}`))
 
-const delay = 300000
+const delay = 60000
 sendNews(delay)
 

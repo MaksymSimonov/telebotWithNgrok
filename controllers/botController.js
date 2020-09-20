@@ -1,7 +1,6 @@
 const axios = require('axios')
 
-const User = require('../models/user')
-const Img = require('../models/img')
+const { createImg, createUser, checkUserById } = require('../db')
 const uploadFile = require('../utils/img/uploadFile')
 
 const credentials = require('../credentials.json')
@@ -18,13 +17,12 @@ createResponse = async (req, res) => {
       const type = message.entities[0].type
 
       if (message.text === '/start' && type === 'bot_command') {
-        const userInDb = await User.findOne({ id: user.id })
+        const userInDb = await checkUserById(user.id)
 
         if (userInDb) {
           text = 'You have already started this bot.'
         } else {
-          const newUser = new User(user)
-          await newUser.save()
+          await createUser(user)
         }
       }
       await axios.post(`${url}/bot${token}/sendMessage`, { chat_id: user.id, text: text })
@@ -40,9 +38,8 @@ createResponse = async (req, res) => {
 
       uploadFile(fileStream)
         .then(async img => {
-          const newImg = new Img(img)
-          await newImg.save()
-          await axios.post(`${url}/bot${token}/sendMessage`, { chat_id: user.id, text: newImg.src })
+          await createImg(img)
+          await axios.post(`${url}/bot${token}/sendMessage`, { chat_id: user.id, text: img.src })
         })
     }
 
