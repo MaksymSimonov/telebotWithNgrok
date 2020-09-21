@@ -16,6 +16,6 @@ client.on('error', err => console.error('PostgreSQL connection error:', err.stac
 
 app.listen(port, () => console.log(`Server running on port ${port}`))
 
-const delay = 60000
+const delay = 300000
 sendNews(delay)
 

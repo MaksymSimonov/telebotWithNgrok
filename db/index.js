@@ -6,7 +6,7 @@ const client = new Client({
     host: config.HOST,
     database: config.DATABASE,
     password: config.PASSWORD,
-    port: config.PORT,
+    port: config.PORT
 })
 
 client
@@ -40,13 +40,13 @@ const getUsers = async () => {
 }
 
 const createUser = async user => {
-  const { 
-    id, 
-    is_bot, 
-    first_name, 
-    last_name, 
-    username, 
-    language_code 
+  const {
+    id,
+    is_bot,
+    first_name,
+    last_name,
+    username,
+    language_code
   } = user
 
   const query = `INSERT INTO users (id, is_bot, first_name, last_name, username, language_code) 
@@ -54,32 +54,29 @@ const createUser = async user => {
 
   try {
     await client.query(query)
-
   } catch (err) {
     throw new Error('Failed to create User')
   }
 }
 
 const createNews = async news => {
-  let { 
-    title,
-    link, 
-    pubDate, 
-    comments, 
-    content, 
-    contentSnippet, 
+  let { title } = news
+  const {
+    link,
+    pubDate,
+    comments,
+    content,
+    contentSnippet,
     isoDate
   } = news
 
-  title = title.split("'").join('')
-  title = title.split('"').join('')
+  title = title.split("'").join("''")
 
   const query = `INSERT INTO news(title, link, pubDate, comments, content, contentSnippet, isoDate) 
                   VALUES ('${title}', '${link}', '${pubDate}', '${comments}', '${content}', '${contentSnippet}', '${isoDate}')`
 
   try {
     await client.query(query)
-
   } catch (err) {
     throw new Error('Failed to create News')
   }
@@ -93,7 +90,6 @@ const createImg = async img => {
 
   try {
     await client.query(query)
-
   } catch (err) {
     throw new Error('Failed to create Img')
   }
@@ -107,6 +103,4 @@ module.exports = {
   createNews,
   createImg
 }
-
-
 

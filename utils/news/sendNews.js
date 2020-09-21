@@ -18,12 +18,11 @@ const sendNews = (delay) => {
         .then(news => {
           news.forEach(async item => {
             const pubDate = moment(item.pubDate).valueOf()
-            console.log(moment(item.pubDate).format('Do MMM YYYY [at] H:mm') )
+           
             if (latestNewsDate < pubDate) {
               await createNews(item)
               if (maxDate < pubDate) maxDate = pubDate
-
-              const link = news.link
+              const link = item.link
               const users = await getUsers()
               if (users) {
                 users.forEach(async user => {
