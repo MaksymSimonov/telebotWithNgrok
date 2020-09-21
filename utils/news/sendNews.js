@@ -11,7 +11,8 @@ const getNews = require('./getNews')
 
 const sendNews = (delay) => {
   try {
-    let latestNewsDate, maxDate = moment().valueOf()
+    let latestNewsDate = moment().valueOf()
+    let maxDate = moment().valueOf()
 
     setTimeout(function request() {
       getNews(rssFeed)
@@ -21,12 +22,13 @@ const sendNews = (delay) => {
            
             if (latestNewsDate < pubDate) {
               await createNews(item)
+
               if (maxDate < pubDate) maxDate = pubDate
-              const link = item.link
               const users = await getUsers()
+
               if (users) {
                 users.forEach(async user => {
-                  await axios.post(`${url}/bot${token}/sendMessage`, { chat_id: user.id, text: link })
+                  await axios.post(`${url}/bot${token}/sendMessage`, { chat_id: user.id, text: item.link })
                 })
               }
             }

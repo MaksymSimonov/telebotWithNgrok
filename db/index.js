@@ -9,10 +9,15 @@ const client = new Client({
     port: config.PORT
 })
 
-client
-  .connect()
-  .then(() => console.log('PostgreSQL Connected!'))
-  .catch(err => `PostgreSQL Connection Error: ${err.stack}`)
+const getConnect = async () => {
+  try {
+    await client.connect()
+    console.log('PostgreSQL Connected!')
+
+  } catch (err) {
+    throw new Error('Failed to get Connect')
+  }
+}
 
 const checkUserById = async id => {
   const query = `SELECT * FROM users WHERE id = ${id}`
@@ -96,7 +101,7 @@ const createImg = async img => {
 }
 
 module.exports = {
-  client,
+  getConnect,
   checkUserById,
   getUsers,
   createUser,
